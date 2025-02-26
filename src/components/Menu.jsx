@@ -1,11 +1,10 @@
-import React from "react";
 import { useState } from "react";
 import Item from "./Item";
 import OrderModal from "./OrderModal";
 import { useSelector } from "react-redux";
 
 function Menu() {
-  const menu = useSelector((state) => state.menuReducer);
+  const menu = useSelector((state) => state.menu);
 
   if (!menu)
     return (

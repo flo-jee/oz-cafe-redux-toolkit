@@ -1,36 +1,28 @@
-import React from "react";
 import data from "../assets/data";
-import { combineReducers, legacy_createStore } from "redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-export const addToCart = (options, quantity, id) => {
-  return {
-    type: "addToCart",
-    payload: { options, quantity, id },
-  };
-};
+export const menuSlice = createSlice({
+  name: "menu",
+  initialState: data.menu,
+  reducers: {},
+});
 
-export const removeFromCart = (id) => {
-  return {
-    type: "removeFromCart",
-    payload: { id },
-  };
-};
+export const cartSlice = createSlice({
+  name: "cart",
+  initialState: [],
+  reducers: {
+    addToCart(state, action) {
+      [...state, action.payload];
+    },
+    removeFromCart(state, action) {
+      state.filter((el) => action.payload.id !== el.id);
+    },
+  },
+});
 
-const cartReducer = (state = [], action) => {
-  switch (action.type) {
-    case "addToCart":
-      return [...state, action.payload];
-    case "removeFromCart":
-      return state.filter((el) => action.payload.id !== el.id);
-    default:
-      return state;
-  }
-};
-
-const menuReducer = (state = data.menu, action) => {
-  return state;
-};
-
-const rootReducer = combineReducers({ cartReducer, menuReducer });
-
-export const store = legacy_createStore(rootReducer);
+export const store = configureStore({
+  reducer: {
+    menu: menuSlice.reducer,
+    cart: cartSlice.reducer,
+  },
+});
